@@ -1,57 +1,54 @@
 #include <iostream>
 #include <unistd.h>
 
-static int player_turn = 1;
-
 using namespace std;
 
-void Loading()
-{
+static int playerTurn = 0;
+
+void Loading() {
     int i = 0;
     cout << "\n Loading";
-    while (i++ < 3)
-    {
+    while (i++ < 3) {
         cout << "." << flush;
-        usleep(300 * 1000);
+        usleep(300 * 600);
     }
     system("clear");
 }
 
-class tictactoe
-{
+class TicTacToe {
 private:
     char box[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
-    string P1;
-    string P2;
+    string P[2];
 
 public:
     void playboard();
-    void mainmenu();
+    void mainMenu();
     bool rules();
-    int playerinput(char);
+    int playerInput(char);
     void position(char);
 };
 
-void tictactoe::playboard()
-{
+void TicTacToe::playboard() {
     cout << "     ||     ||     \n";
-    cout << "  " << box[0][0] << "  " << "||" << "  " << box[0][1] << "  " << "||"<< "  " << box[0][2] << "  \n";
-    cout << "     ||     ||     \n";
-    cout << "-----||-----||-----\n";
-    cout << "     ||     ||     \n";
-    cout << "  " << box[1][0] << "  "<< "||" << "  " << box[1][1] << "  " << "||" << "  " << box[1][2] << "  \n";
+    cout << "  " << box[0][0] << "  " << "||" << "  " << box[0][1] << "  "
+         << "||" << "  " << box[0][2] << "  \n";
     cout << "     ||     ||     \n";
     cout << "-----||-----||-----\n";
     cout << "     ||     ||     \n";
-    cout << "  " << box[2][0] << "  " << "||" << "  " << box[2][1] << "  " << "||" << "  " << box[2][2] << "  \n";
+    cout << "  " << box[1][0] << "  " << "||" << "  " << box[1][1] << "  "
+         << "||" << "  " << box[1][2] << "  \n";
     cout << "     ||     ||     \n";
+    cout << "-----||-----||-----\n";
+    cout << "     ||     ||     \n";
+    cout << "  " << box[2][0] << "  " << "||" << "  " << box[2][1] << "  "
+         << "||" << "  " << box[2][2] << "  \n";
+    cout << "     ||     ||     " << endl;
 }
 
-void tictactoe::mainmenu()
-{
+void TicTacToe::mainMenu() {
     playboard();
     cout << "\n\nPress Enter to start the game!" << flush;
-    
+
     system("read");
     system("clear");
     Loading();
@@ -60,158 +57,124 @@ void tictactoe::mainmenu()
     cout << "\t     PLAYER INFO\n";
     cout << "\t---------------------\n";
     cout << "\t---------------------\n\n\n";
-    
-    cout <<"Name of Player 1: ";
-    getline(cin >> ws, P1);
-    cout << "Name of Player 2: ";
-    getline(cin >> ws, P2);
+
+    for (int i = 0; i < 2; i++) {
+        cout << "Name of Player " << i + 1 << ": ";
+        getline(cin >> ws, P[i]);
+    }
     cout << "\nLet's Start!" << flush;
     system("read");
     system("clear");
     Loading();
-    
+
     playboard();
-    cout << "\n'O' is assigned to " << P1 << "\n";
-    cout << "'X' is assigned to " << P2 << "\n\n";
-    cout << P1 << " will start first!" << endl;
+    cout << "\n'O' is assigned to " << P[0] << "\n";
+    cout << "'X' is assigned to " << P[1] << "\n\n";
+    cout << P[0] << " will start first!" << endl;
     system("read");
     system("clear");
 }
 
-bool tictactoe::rules()
-{
-    for (int i = 0; i < 3; i++)
-    {
-        if((box[i][0] == 'O' && box[i][1] == 'O' && box[i][2] == 'O') ||
-           (box[0][i] == 'O' && box[1][i] == 'O' && box[2][i] == 'O'))
-        {
+bool TicTacToe::rules() {
+    for (int i = 0; i < 3; i++) {
+        if ((box[i][0] == 'O' && box[i][1] == 'O' && box[i][2] == 'O') ||
+            (box[0][i] == 'O' && box[1][i] == 'O' && box[2][i] == 'O')) {
             system("clear");
             playboard();
-            cout << "Hurray! " << P1 << " Won!" << endl;
+            cout << "Hurray! " << P[0] << " Won!" << endl;
             return true;
         }
-        
-        else if((box[i][0] == 'X' && box[i][1] == 'X' && box[i][2] == 'X') ||
-                (box[0][i] == 'X' && box[1][i] == 'X' && box[2][i] == 'X'))
-        {
+
+        else if ((box[i][0] == 'X' && box[i][1] == 'X' && box[i][2] == 'X') ||
+                 (box[0][i] == 'X' && box[1][i] == 'X' && box[2][i] == 'X')) {
             system("clear");
             playboard();
-            cout << "Hurray! " << P2 << " Won!" << endl;
+            cout << "Hurray! " << P[1] << " Won!" << endl;
             return true;
         }
     }
-    
-    if(box[0][0] == 'O' && box[1][1] == 'O' && box[2][2] == 'O')
-    {
+
+    if ((box[0][0] == 'O' || box[0][2] == 'O') && box[1][1] == 'O' &&
+        (box[2][2] == 'O' || box[2][0] == 'O')) {
         system("clear");
         playboard();
-        cout << "Hurray! " << P1 << " Won!" << endl;
+        cout << "Hurray! " << P[0] << " Won!" << endl;
         return true;
     }
 
-    else if(box[0][0] == 'X' && box[1][1] == 'X' && box[2][2] == 'X')
-    {
+    else if ((box[0][0] == 'X' || box[0][2] == 'X') && box[1][1] == 'X' &&
+             (box[2][2] == 'X' || box[2][0] == 'X')) {
         system("clear");
         playboard();
-        cout << "Hurray! " << P1 << " Won!" << endl;
+        cout << "Hurray! " << P[0] << " Won!" << endl;
         return true;
     }
     return false;
 }
 
-int tictactoe::playerinput(char OX)
-{
+int TicTacToe::playerInput(char OX) {
     playboard();
-    int T;
-    
-    if(OX == 'O')
-        cout << "\nIt's your turn " << P1 << "\n"; 
+    int pos;
 
-    else if(OX == 'X')
-        cout << "\nIt's your turn " << P2 << "\n";
-    
+    if (OX == 'O')
+        cout << "\nIt's your turn " << P[0] << "\n";
+
+    else
+        cout << "\nIt's your turn " << P[1] << "\n";
+
     cout << "Enter the desired '" << OX << "' position: ";
-    cin >> T;
-    return T;
+    cin >> pos;
+    return pos;
 }
 
-void tictactoe::position(char OX)
-{
-loop:
-    switch(playerinput(OX))
-    {
-        case 1:
-            box[0][0] = OX;
-            return;
-        
-        case 2:
-            box[0][1] = OX;
-            return;
-        
-        case 3:
-            box[0][2] = OX;
-            return;
+void TicTacToe::position(char OX) {
+    int isValidPos = false;
+    do {
+        int pos = playerInput(OX);
+        int cols = (pos - 1) % 3;
+        int row = (pos - 1) / 3;
 
-        case 4:
-            box[1][0] = OX;
-            return;
-        
-        case 5:
-            box[1][1] = OX;
-            return;
-        
-        case 6:
-            box[1][2] = OX;
-            return;
-        
-        case 7:
-            box[2][0] = OX;
-            return;
-        
-        case 8:
-            box[2][1] = OX;
-            return;
-        
-        case 9:
-            box[2][2] = OX;
-            return;
+        if ((pos > 0 && pos < 10) &&
+            (box[row][cols] != 'X' && box[row][cols] != 'O')) {
+            box[row][cols] = OX;
+            isValidPos = true;
+        } else {
+            cout << "\nEnter available number from the board!" << endl;
+            system("read");
+            system("clear");
+        }
+    } while (!isValidPos);
+}
+
+int main() {
+    system("clear");
+
+    char OX = 'O';
+    bool isWinner = false;
+    TicTacToe tictactoe;
+
+    tictactoe.mainMenu();
+
+    for (int i = 0; i < 9; i++) {
+        OX = playerTurn % 2 ? 'X' : 'O';
+        tictactoe.position(OX);
+
+        if (playerTurn > 3) {
+            isWinner = tictactoe.rules();
+            if (isWinner)
+                break;
+        }
+
+        playerTurn++;
+        system("clear");
     }
 
-    system("clear");
-    cout << "Enter available number from the board!" << endl;
-    system("read");
-    goto loop;
-    return;
-}
-
-
-int main()
-{
-    system("clear");
-
-    tictactoe game;
-    game.mainmenu();
-    int i;
-    char OX;
-    for(i = 0; i < 9; i++)
-    {
-        if(player_turn % 2 == 1)
-            OX = 'O';
-        else if(player_turn % 2 == 0)
-            OX = 'X';
-        game.position(OX);
-        cout << flush;
-        player_turn++;
-        if(game.rules())
-            break;
+    if (!isWinner) {
         system("clear");
-    } 
-    if(i == 9)
-    {
-        system("clear");
-        game.playboard();
+        tictactoe.playboard();
         cout << "\nGame is Draw!" << endl;
     }
+
     system("read");
     system("clear");
 }
