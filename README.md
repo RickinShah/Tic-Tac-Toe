@@ -3,9 +3,9 @@
 Only for Linux/MacOs
 ===============
 
-### Getting started
+## Getting started
 
-## Prerequisites
+### Prerequisites
 
 - Linux/MacOs
 - GCC compiler
