@@ -94,19 +94,19 @@ bool TicTacToe::rules() {
         }
     }
 
-    if ((box[0][0] == 'O' || box[0][2] == 'O') && box[1][1] == 'O' &&
-        (box[2][2] == 'O' || box[2][0] == 'O')) {
+    if ((box[0][0] == 'O' && box[1][1] == 'O' && box[2][2] == 'O') ||
+        (box[0][2] == 'O' && box[1][1] == 'O' && box[2][0] == 'O')) {
         system("clear");
         playboard();
         cout << "Hurray! " << P[0] << " Won!" << endl;
         return true;
     }
 
-    else if ((box[0][0] == 'X' || box[0][2] == 'X') && box[1][1] == 'X' &&
-             (box[2][2] == 'X' || box[2][0] == 'X')) {
+    else if ((box[0][0] == 'X' && box[1][1] == 'X' && box[2][2] == 'X') ||
+             (box[0][2] == 'X' && box[1][1] == 'X' && box[2][0] == 'X')) {
         system("clear");
         playboard();
-        cout << "Hurray! " << P[0] << " Won!" << endl;
+        cout << "Hurray! " << P[1] << " Won!" << endl;
         return true;
     }
     return false;
